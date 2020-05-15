@@ -23,4 +23,15 @@ router.post("/resources", (req, res) => {
       res.status(500).json({ message: "Failed to create new resource" });
     });
 });
+
+router.get("/", (req, res) => {
+  Project.getProjects()
+    .then((projects) => {
+      res.status(200).json(projects);
+    })
+    .catch((err) => {
+      res.status(500).json({ message: "uh oh issue retrieving projects" });
+    });
+});
+
 module.exports = router;
