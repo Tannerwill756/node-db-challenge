@@ -44,6 +44,16 @@ router.post("/", (req, res) => {
     });
 });
 
+router.get("/tasks_projects", (req, res) => {
+  Project.getTaskswithProject()
+    .then((tasks) => {
+      res.status(200).json(tasks);
+    })
+    .catch((err) => {
+      res.status(500).json({ message: "uh oh issue retrieving tasks" });
+    });
+});
+
 router.get("/tasks", (req, res) => {
   Project.getTasks()
     .then((tasks) => {
@@ -51,6 +61,16 @@ router.get("/tasks", (req, res) => {
     })
     .catch((err) => {
       res.status(500).json({ message: "uh oh issue retrieving tasks" });
+    });
+});
+
+router.post("/tasks", (req, res) => {
+  Project.addTask(req.body)
+    .then((task) => {
+      res.status(201).json(task);
+    })
+    .catch((err) => {
+      res.status(500).json({ message: "Failed to create new task" });
     });
 });
 module.exports = router;
