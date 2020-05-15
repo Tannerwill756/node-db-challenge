@@ -43,4 +43,14 @@ router.post("/", (req, res) => {
       res.status(500).json({ message: "Failed to create new project" });
     });
 });
+
+router.get("/tasks", (req, res) => {
+  Project.getTasks()
+    .then((tasks) => {
+      res.status(200).json(tasks);
+    })
+    .catch((err) => {
+      res.status(500).json({ message: "uh oh issue retrieving tasks" });
+    });
+});
 module.exports = router;
