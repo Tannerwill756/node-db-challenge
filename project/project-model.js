@@ -8,6 +8,9 @@ module.exports = {
   getTasks,
   getTaskswithProject,
   addTask,
+  getProjectById,
+  getProjectTasks,
+  //   postTaskToProject,
 };
 
 function getResources() {
@@ -56,3 +59,34 @@ function getTasks() {
 function addTask(task) {
   return db("tasks").insert(task, "id");
 }
+
+// -------------------- extra stuff
+
+function getProjectById(id) {
+  return db("projects").where({ id: id }).first();
+}
+
+function getProjectTasks(id) {
+  return db("tasks")
+    .select(
+      "tasks.description AS taskDescription",
+      "tasks.notes AS taskNotes",
+      "projects.id AS project_id"
+    )
+    .join("projects", "tasks.project_id", "=", "projects.id")
+    .where("tasks.project_id", id);
+}
+
+// function postTaskToProject(task, project_id) {
+//   console.log("post task!!", task);
+//   const newtask = {
+//     project_id: project_id,
+//     Description: task.taskDescription,
+//     notes: task.taskNotes,
+//   };
+//   return db("tasks")
+//     .insert(newtask, "id")
+//     .then((project_id) => {
+//       return getProjectTasks(newtask.project_id);
+//     });
+// }

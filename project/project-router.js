@@ -4,6 +4,7 @@ const Project = require("./project-model");
 
 const router = express.Router();
 
+// GET LIST OF RESOURCES
 router.get("/resources", (req, res) => {
   Project.getResources()
     .then((resources) => {
@@ -14,6 +15,7 @@ router.get("/resources", (req, res) => {
     });
 });
 
+// POST A RESOURCE
 router.post("/resources", (req, res) => {
   Project.addResource(req.body)
     .then((resource) => {
@@ -24,6 +26,7 @@ router.post("/resources", (req, res) => {
     });
 });
 
+// GET A LIST OF PROJECTS
 router.get("/", (req, res) => {
   Project.getProjects()
     .then((projects) => {
@@ -34,6 +37,7 @@ router.get("/", (req, res) => {
     });
 });
 
+// POST A PROJECT
 router.post("/", (req, res) => {
   Project.addProject(req.body)
     .then((project) => {
@@ -44,6 +48,7 @@ router.post("/", (req, res) => {
     });
 });
 
+// GET A LIST OF TASKS RELATED TO A PROJECT
 router.get("/tasks_projects", (req, res) => {
   Project.getTaskswithProject()
     .then((tasks) => {
@@ -54,6 +59,7 @@ router.get("/tasks_projects", (req, res) => {
     });
 });
 
+// GET A LIST OF ALL TASKS
 router.get("/tasks", (req, res) => {
   Project.getTasks()
     .then((tasks) => {
@@ -64,6 +70,7 @@ router.get("/tasks", (req, res) => {
     });
 });
 
+//POST A TASK
 router.post("/tasks", (req, res) => {
   Project.addTask(req.body)
     .then((task) => {
@@ -73,4 +80,44 @@ router.post("/tasks", (req, res) => {
       res.status(500).json({ message: "Failed to create new task" });
     });
 });
+
+// GET PROJECT BY ID
+router.get("/:id", (req, res) => {
+  const { id } = req.params;
+  Project.getProjectById(id)
+    .then((project) => {
+      res.status(201).json(project);
+    })
+    .catch((err) => {
+      res.status(500).json({ message: "Failed to get that project" });
+    });
+});
+
+//GET TASKS FOR SPECIFIC PROJECT
+router.get("/:id/tasks", (req, res) => {
+  const { id } = req.params;
+  Project.getProjectTasks(id)
+    .then((tasks) => {
+      res.status(201).json(tasks);
+    })
+    .catch((err) => {
+      res.status(500).json({ message: "Failed to get tasks for that project" });
+    });
+});
+
+//POST TASK FOR A SPECIFIC PROJECT
+// router.post("/:id/tasks", (req, res) => {
+//   const task = req.body;
+//   const { id } = req.params;
+
+//   Project.getProjectById(id)
+//     .then((project) => {
+//       Project.postTaskToProject(task, id).then((task) => {
+//         res.status(201).json(task);
+//       });
+//     })
+//     .catch((err) => {
+//       res.status(500).json({ message: "Failed to create new task" });
+//     });
+// });
 module.exports = router;
